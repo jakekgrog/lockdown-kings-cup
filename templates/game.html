@@ -3,11 +3,66 @@
 <head>
 	<title>Kings</title>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.0.0/socket.io.js"></script>
+    <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Lobster&display=swap" rel="stylesheet">
 </head>
 <body>
-        <button  onClick="pullCard()">Pull Card</button>
-        <h2 id="card"></h2>
-        <h2 id="player"></h2>
+    
+    <nav class="navbar">
+        <div class="container-fluid">
+            <!-- Nav Header -->
+            <div class="navbar-header">
+                <h1 style="color: white; font-family: 'Lobster', cursive;">Lockdown Kings</h1>
+            </div>
+        </div>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Seven-Heaven!</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="jumbotron align-self-center">
+            <h1 class="display-4">Lockdown Kings</h1>
+            <p class="lead">The card next to 'Current Card' is the most recent card played.</p>
+            <p class="lead">If your name is shown beside 'Next Player', press the 'Pull Card' button when ready.</p>
+            <div class="row">
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-primary">
+                        Kings Drawn <span class="badge badge-light">0</span>
+                    </button>
+                </div>
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-primary">
+                        Current Card <span class="badge badge-light" id="card"></span>
+                    </button>
+                </div>
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-primary">
+                        Next Player <span class="badge badge-light" id="player"></span>
+                    </button>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row justify-content-center">
+            <p class="lead">
+                <a href="#" onClick="pullCard()" class="btn btn-danger btn-lg" role="button">Pull Card</a>
+            </p>
+            </div>
+        </div>
+
+
+    </div>
+
+
         <script type="text/javascript" charset="utf-8">
     		var socket = io.connect('http://localhost:5000');
     		socket.on('connect', function() {

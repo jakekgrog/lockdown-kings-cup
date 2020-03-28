@@ -5,14 +5,15 @@ import json
 from deck import Deck, Card
 
 app = Flask(__name__)
-
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 socketio = SocketIO(app)
 
 connection_count = 0
 
 deck = Deck()
+deck.shuffle()
 
-players = ["Jack", "Jake", "Alina", "Greta", "Cormac", "Eoghan", "Sophie", "Aaisha", "Sean", "Leah", "Carrie"]
+players = ["Jake", "Jack", "Alina", "Greta", "Cormac", "Eoghan", "Sophie", "Aaisha", "Sean", "Leah", "Carrie"]
 global i
 i = 0
 

@@ -1,3 +1,5 @@
+import random
+
 class Deck(object):
     def __init__(self):
         self.cards = []
@@ -9,7 +11,10 @@ class Deck(object):
             print(card.show())
 
     def pullCard(self):
-        return self.cards.pop()
+        card = self.cards.pop()
+        if self.cards == []:
+            self.build()
+        return card.__str__()
 
     # Generate 52 cards
     def build(self):
