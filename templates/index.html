@@ -1,11 +1,96 @@
-
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Kings</title>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.0.0/socket.io.js"></script>
+    <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:700&display=swap" rel="stylesheet">
 </head>
 <body>
-	<button>Start Game</button>
-	<button>Join Game</button>
+    
+    <nav class="navbar">
+        <div class="container-fluid">
+            <!-- Nav Header -->
+            <div class="navbar-header">
+                <h1 style="color: white; font-family: 'Lobster', cursive;">Lockdown Kings</h1>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div id="alert" class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong id="r"></strong> <span id="m"></span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="jumbotron align-self-center">
+            <h1 class="navbar-header" style="font-family: 'Lobster', cursive; font-size: 65px; background: linear-gradient(to right, #ff5858, #f857a6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Lockdown Kings</h1>
+            <br>
+            <p class="lead">The card next to 'Current Card' is the most recent card played.<br>
+            If your name is shown beside 'Next Player', press the 'Pull Card' button when ready.</p>
+            <hr class="my-4">
+
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-primary">
+                        Kings Drawn <span id="kings" class="badge badge-light"></span>
+                    </button>
+                </div>
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-primary">
+                        Current Card <span class="badge badge-light" id="card"></span>
+                    </button>
+                </div>
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-primary">
+                        Next Player <span class="badge badge-light" id="player"></span>
+                    </button>
+                </div>
+
+            <hr class="my-4">
+            <div class="row justify-content-center">
+                <div class="container extra">
+                    <a href="#" onClick="pullCard()" class="bttn btn-2" style="font-family: 'Montserrat', sans-serif;" role="button">Pull Card</a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script type="text/javascript" charset="utf-8">
+        var socket = io.connect('http://localhost:5000');
+        document.getElementById("alert").style.visibility = "hidden";
+        document.getElementById("kings").innerHTML = 0;
+
+        socket.on('connect', function() {
+            socket.emit('onconnect', {data: 'I\'m connected!'});
+        });
+
+        function pullCard() {
+            socket.emit('pullcard')
+        }
+
+        socket.on('response', function(res) {
+            if (res.alert.length == 0) {
+                document.getElementById("alert").style.visibility = "hidden";
+            } else {
+                document.getElementById("alert").style.visibility = "visible";
+            }
+
+            document.getElementById("kings").innerHTML = res.count;
+            document.getElementById("card").innerHTML = res.card;
+            document.getElementById("player").innerHTML = res.player;
+            document.getElementById("r").innerHTML = res.alert.rule;
+            document.getElementById("m").innerHTML = res.alert.meaning;
+        });
+        
+    </script>
 </body>
 </html>

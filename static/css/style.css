@@ -6,3 +6,36 @@
 body {
     background: linear-gradient(to right, #ff5858, #f857a6);
 }
+
+.bttn {
+  flex: 1 1 auto;
+  margin: 10px;
+  padding: 30px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  text-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+ }
+
+.btn-2 {
+  background-image: linear-gradient(to right, #e0c05a 0%, #e08d75 51%, #e0c05a 100%);
+}
+
+.bttn:hover {
+  text-decoration: none;
+  color: black;
+  background-position: right center; /* change the direction of the change here */
+}
+
+.extra {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+  width: 50%;
+}

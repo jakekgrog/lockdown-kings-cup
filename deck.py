@@ -14,7 +14,7 @@ class Deck(object):
         card = self.cards.pop()
         if self.cards == []:
             self.build()
-        return card.__str__()
+        return card
 
     # Generate 52 cards
     def build(self):

@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO
+from rules import rules
 import json
 
 from deck import Deck, Card
@@ -10,40 +11,70 @@ socketio = SocketIO(app)
 
 connection_count = 0
 
+global deck
+
 deck = Deck()
 deck.shuffle()
 
-players = ["Jake", "Jack", "Alina", "Greta", "Cormac", "Eoghan", "Sophie", "Aaisha", "Sean", "Leah", "Carrie"]
+players = []
+with open("players.txt", "r") as f:
+    for line in f.readlines():
+        players.append(line.strip().split())
+
 global i
 i = 0
 
+global card
+card = None
+
+global player
+player = ""
+
+global alert
+alert = ""
+
+global kingcount
+kingcount = 0
+
 @socketio.on('onconnect')
 def handle_onconnect(message):
-	global connection_count
-	connection_count += 1
-	print(message)
+    global connection_count
+    global card
+    global player
+    global alert
+    connection_count += 1
+    socketio.emit('response', {"card": card.__str__(), "player": player, "alert": alert, "count": kingcount})
 
 @socketio.on('pullcard')
-def handle_skip():
+def pullcard():
     global i
+    global card
+    global player
+    global alert
+    global kingcount
+    global deck
     card = deck.pullCard()
-    print(card)
+    player = players[i]
+    alert =  rules[card.value]
     i += 1
-    socketio.emit('response', {"card": card.__str__(), "player": players[i]})
-    if i == len(players) - 1:
+
+    if card.value == 13:
+        kingcount += 1
+
+    socketio.emit('response', {"card": card.__str__(), "player": player, "alert": alert, "count": kingcount})
+    if i == len(players):
         i = 0
-    return 
+    if kingcount == 4:
+        kingcount = 0
+        deck = Deck()
+        deck.shuffle()
 
 @app.route('/')
-def index():
+def index():    
+    if connection_count >= 15:
+        print("REFUSED")
+        return "error"
     return render_template("index.html")
-
-@app.route('/game')
-def game():
-	if connection_count >= 15:
-		print("REFUSED")
-		return "error.html"
-	return render_template("game.html")
 
 if __name__ == '__main__':
     # Encapsulates the start up of the web server
