@@ -2,7 +2,7 @@
 
 A virtual game of kings for virtual parties for the Covid-19 lockdown.
 
-![](https://imgur.com/44lrLDM)
+![](https://raw.githubusercontent.com/jakekgrog/lockdown-kings-cup/master/assets/lockdown.PNG)
 
 ## How it works
 
