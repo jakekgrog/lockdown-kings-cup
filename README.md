@@ -33,3 +33,4 @@ A virtual game of kings for virtual parties for the Covid-19 lockdown.
 
 - It's not perfect but it does the job :)
     - I hacked this together pretty quickly
+    - Works great for video calling friends
