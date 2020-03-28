@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kings</title>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.0.0/socket.io.js"></script>
+</head>
+<body>
+        <button  onClick="pullCard()">Pull Card</button>
+        <h2 id="card"></h2>
+        <h2 id="player"></h2>
+        <script type="text/javascript" charset="utf-8">
+    		var socket = io.connect('http://localhost:5000');
+    		socket.on('connect', function() {
+        		socket.emit('onconnect', {data: 'I\'m connected!'});
+    		});
+
+    		function pullCard() {
+    			socket.emit('pullcard')
+    		}
+
+    		function skip() {
+    			socket.emit('skip', {code: 201})
+    		}
+
+    		socket.on('response', function(res) {
+    			console.log(res.card, res.player)
+                document.getElementById("card").innerHTML = res.card;
+                document.getElementById("player").innerHTML = res.player;
+    		})
+		</script>
+</body>
+</html>
